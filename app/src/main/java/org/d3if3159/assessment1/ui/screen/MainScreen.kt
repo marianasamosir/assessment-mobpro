@@ -1,6 +1,8 @@
 package org.d3if3159.assessment1.ui.screen
 
 import android.content.res.Configuration
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,7 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Checkbox
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -24,7 +26,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,13 +36,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.d3if3159.assessment1.R
 import org.d3if3159.assessment1.ui.theme.Assessment1Theme
 
-
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(){
@@ -58,32 +60,38 @@ fun MainScreen(){
             )
         }
     ) {padding ->
-            ScreenContent(Modifier.padding(padding))
+        ScreenContent(Modifier.padding(padding))
     }
 }
 
 @Composable
 fun ScreenContent(modifier: Modifier) {
 
-    val gelarRadioOptions = listOf(
+    val superBurgerLabel = stringResource(id = R.string.super_burger)
+    val smallBurgerLabel = stringResource(id = R.string.small_burger)
+
+    val ukuranList = listOf(
+        superBurgerLabel,
+        smallBurgerLabel
+    )
+
+    val gelarList = listOf(
         stringResource(id = R.string.tn),
         stringResource(id = R.string.ny),
         stringResource(id = R.string.nn)
     )
     var gelar by remember { mutableStateOf<String?>(null) }
     var nama by remember { mutableStateOf("") }
-    val ukuranRadioOptions = listOf(
-        stringResource(id = R.string.super_burger),
-        stringResource(id = R.string.small_burger)
-    )
+
     var ukuran by remember {  mutableStateOf<String?>(null) }
 
-    val varian = mutableListOf(
-        stringResource(id = R.string.keju),
-        stringResource(id = R.string.saos),
-        stringResource(id = R.string.daging),
-        stringResource(id = R.string.telur)
-    )
+    val hargaSuperBurger = 50000
+    val hargaSmallBurger = 30000
+
+    var hargaOutput by remember { mutableStateOf("") }
+    var namaOutput by remember { mutableStateOf("") }
+    var ukuranOutput by remember { mutableStateOf("") }
+
     Column (
         modifier = modifier
             .fillMaxSize()
@@ -99,9 +107,8 @@ fun ScreenContent(modifier: Modifier) {
             modifier = Modifier
                 .padding(top = 6.dp)
                 .border(1.dp, Color.Gray, RoundedCornerShape(4.dp))
-
         ) {
-            gelarRadioOptions.forEach { text ->
+            gelarList.forEach { text ->
                 GelarOption(
                     label = text,
                     isSelected = gelar == text,
@@ -122,6 +129,7 @@ fun ScreenContent(modifier: Modifier) {
             label = { Text(text = stringResource(id = R.string.nama_pelanggan)) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(
+                capitalization = KeyboardCapitalization.Sentences,
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Next
             ),
@@ -131,47 +139,21 @@ fun ScreenContent(modifier: Modifier) {
             modifier = Modifier
                 .padding(top = 6.dp)
                 .border(1.dp, Color.Gray, RoundedCornerShape(4.dp))
-
         ) {
-            ukuranRadioOptions.forEach { text ->
+            ukuranList.forEach { text ->
                 UkuranOption(
                     label = text,
                     isSelected = ukuran == text,
                     modifier = Modifier
                         .selectable(
                             selected = ukuran == text,
-                            onClick = { ukuran = text },
+                            onClick = {
+                                ukuran = text
+                            },
                             role = Role.RadioButton
                         )
                         .weight(1f)
                         .padding(16.dp)
-                )
-            }
-        }
-        Column (
-                modifier = Modifier
-                    .padding(top = 6.dp)
-                    .border(1.dp, Color.Gray, RoundedCornerShape(4.dp)),
-        ){
-            Text(
-                text = stringResource(id = R.string.tambahan),
-                style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(15.dp)
-            )
-            varian.forEach { text ->
-                val cekVarian = remember { mutableStateOf(false) }
-
-                TambahVarian(
-                    label = text,
-                    isChecked = cekVarian,
-                    modifier = Modifier
-                        .selectable(
-                            selected = cekVarian.value,
-                            onClick = { cekVarian.value = !cekVarian.value },
-                            role = Role.Checkbox
-                        )
                 )
             }
         }
@@ -180,15 +162,38 @@ fun ScreenContent(modifier: Modifier) {
             horizontalArrangement = Arrangement.SpaceEvenly,
         ){
             Button(
-                onClick = {},
+                onClick = {
+                    if(gelar != null && nama.isNotBlank() && ukuran != null) {
+                        val ukuranId = when (ukuran) {
+                            superBurgerLabel -> R.string.super_burger
+                            smallBurgerLabel -> R.string.small_burger
+                            else -> 0
+                        }
+                        val harga = when (ukuranId) {
+                            R.string.super_burger -> hargaSuperBurger
+                            R.string.small_burger -> hargaSmallBurger
+                            else -> 0
+                        }
+                        hargaOutput = "Harga: $harga"
+                        namaOutput = "Pesanan atas nama ${gelar ?: ""} $nama"
+                        ukuranOutput= "Ukuran: ${ukuran ?: ""}"
+                    }
+                },
                 modifier = Modifier.padding(top = 8.dp),
                 contentPadding = PaddingValues(horizontal = 22.dp, vertical = 12.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF866A0E))
-                ){
+            ) {
                 Text(text = stringResource(id = R.string.cek_harga))
             }
+
             Button(
                 onClick = {
+                    gelar = null
+                    nama = ""
+                    ukuran = null
+                    hargaOutput = ""
+                    namaOutput = ""
+                    ukuranOutput = ""
                 },
                 modifier = Modifier.padding(top = 8.dp),
                 contentPadding = PaddingValues(horizontal = 35.dp, vertical = 12.dp),
@@ -197,25 +202,27 @@ fun ScreenContent(modifier: Modifier) {
                 Text(text = stringResource(id = R.string.reset))
             }
         }
-    }
-}
-
-@Composable
-fun TambahVarian(label: String, isChecked: MutableState<Boolean>, modifier: Modifier = Modifier) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier
-            .fillMaxWidth()
-            .padding()
-    ) {
-        Checkbox(
-            checked = isChecked.value,
-            onCheckedChange = { isChecked.value = it }
+        Divider(
+            modifier = Modifier.padding(vertical = 8.dp),
+            thickness = 1.dp
         )
         Text(
-            text = label,
-            style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier.padding(start = 8.dp)
+            text = namaOutput,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier
+                .padding(top = 8.dp)
+        )
+        Text(
+            text = ukuranOutput,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier
+                .padding(top = 8.dp)
+        )
+        Text(
+            text = hargaOutput,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier
+                .padding(top = 8.dp)
         )
     }
 }
@@ -251,7 +258,7 @@ fun UkuranOption(label: String, isSelected: Boolean, modifier: Modifier) {
     }
 }
 
-
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable

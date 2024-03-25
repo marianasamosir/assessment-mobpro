@@ -7,11 +7,15 @@
     <string name="nama_pelanggan">Nama Pelanggan</string>
     <string name="super_burger">Super Burger</string>
     <string name="small_burger">Small Burger</string>
-    <string name="tambahan">Tambahan</string>
-    <string name="keju">Keju (+Rp5000)</string>
-    <string name="saos">Saos (+Rp3000)</string>
-    <string name="daging">Daging (+Rp15000)</string>
-    <string name="telur">Telur (+Rp10000)</string>
     <string name="cek_harga">Cek Harga</string>
     <string name="reset">Reset</string>
+
+    <!--    <string name="tambahan">Tambahan</string>-->
+    <!--    <string name="keju">Keju (+Rp5000)</string>-->
+    <!--    <string name="saos">Saos (+Rp3000)</string>-->
+    <!--    <string name="daging">Daging (+Rp15000)</string>-->
+    <!--    <string name="telur">Telur (+Rp10000)</string>-->
+    <!--    <string name="baris_1">Pesanan atas nama %s %s</string>-->
+    <!--    <string name="baris_2">Ukuran %s</string>-->
+    <!--    <string name="baris_3">Total harga:Rp</string>-->
 </resources>
