@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,6 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -21,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -74,6 +78,12 @@ fun ScreenContent(modifier: Modifier) {
     )
     var ukuran by remember {  mutableStateOf<String?>(null) }
 
+    val varian = mutableListOf(
+        stringResource(id = R.string.keju),
+        stringResource(id = R.string.saos),
+        stringResource(id = R.string.daging),
+        stringResource(id = R.string.telur)
+    )
     Column (
         modifier = modifier
             .fillMaxSize()
@@ -139,9 +149,9 @@ fun ScreenContent(modifier: Modifier) {
             }
         }
         Column (
-            modifier = Modifier
-                .padding(top = 6.dp)
-                .border(1.dp, Color.Gray, RoundedCornerShape(4.dp)),
+                modifier = Modifier
+                    .padding(top = 6.dp)
+                    .border(1.dp, Color.Gray, RoundedCornerShape(4.dp)),
         ){
             Text(
                 text = stringResource(id = R.string.tambahan),
@@ -150,18 +160,48 @@ fun ScreenContent(modifier: Modifier) {
                     .fillMaxWidth()
                     .padding(15.dp)
             )
-            TambahVarian(R.string.keju, Modifier)
-            TambahVarian(R.string.saos, Modifier)
-            TambahVarian(R.string.daging, Modifier)
-            TambahVarian(R.string.telur, Modifier)
+            varian.forEach { text ->
+                val cekVarian = remember { mutableStateOf(false) }
+
+                TambahVarian(
+                    label = text,
+                    isChecked = cekVarian,
+                    modifier = Modifier
+                        .selectable(
+                            selected = cekVarian.value,
+                            onClick = { cekVarian.value = !cekVarian.value },
+                            role = Role.Checkbox
+                        )
+                )
+            }
+        }
+        Row (
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+        ){
+            Button(
+                onClick = {},
+                modifier = Modifier.padding(top = 8.dp),
+                contentPadding = PaddingValues(horizontal = 22.dp, vertical = 12.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF866A0E))
+                ){
+                Text(text = stringResource(id = R.string.cek_harga))
+            }
+            Button(
+                onClick = {
+                },
+                modifier = Modifier.padding(top = 8.dp),
+                contentPadding = PaddingValues(horizontal = 35.dp, vertical = 12.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF866A0E))
+            ) {
+                Text(text = stringResource(id = R.string.reset))
+            }
         }
     }
 }
 
 @Composable
-fun TambahVarian(labelResId: Int, modifier: Modifier = Modifier) {
-    val labelText = stringResource(id = labelResId)
-    var checked by remember { mutableStateOf(false) }
+fun TambahVarian(label: String, isChecked: MutableState<Boolean>, modifier: Modifier = Modifier) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
@@ -169,11 +209,11 @@ fun TambahVarian(labelResId: Int, modifier: Modifier = Modifier) {
             .padding()
     ) {
         Checkbox(
-            checked = checked, // Ganti dengan status yang sesuai jika diperlukan
-            onCheckedChange = {checked = it} // Tambahkan logika yang sesuai jika diperlukan
+            checked = isChecked.value,
+            onCheckedChange = { isChecked.value = it }
         )
         Text(
-            text = labelText,
+            text = label,
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.padding(start = 8.dp)
         )
