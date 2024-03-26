@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">BurgerQueen</string>
+    <string name="app_intro">Burger Queen memiliki beberapa varian topping dengan 2 jenis ukuran. Silahkan isi untuk cek harga pesanan anda.</string>
+    <string name="tn">Tn</string>
+    <string name="ny">Ny</string>
+    <string name="nn">Nn</string>
+    <string name="nama_pelanggan">Nama Pelanggan</string>
+    <string name="super_burger">Super Burger</string>
+    <string name="small_burger">Small Burger</string>
+    <string name="tambahan">Tambahan</string>
+    <string name="keju">Keju (+Rp5000)</string>
+    <string name="saos">Saos (+Rp3000)</string>
+    <string name="daging">Daging (+Rp15000)</string>
+    <string name="telur">Telur (+Rp10000)</string>
+    <string name="cek_harga">Cek Harga</string>
+    <string name="reset">Reset</string>
 </resources>
