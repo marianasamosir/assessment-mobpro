@@ -10,8 +10,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -27,6 +29,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.d3if3159.assessment1.R
@@ -62,6 +66,7 @@ fun ScreenContent(modifier: Modifier) {
         stringResource(id = R.string.nn)
     )
     var gelar by remember { mutableStateOf(radioOptions[0]) }
+    var nama by remember { mutableStateOf("") }
 
     Column (
         modifier = modifier
@@ -92,7 +97,17 @@ fun ScreenContent(modifier: Modifier) {
                 )
             }
         }
-
+        OutlinedTextField(
+            value = nama,
+            onValueChange = { nama = it },
+            label = { Text(text = stringResource(id = R.string.nama_pelanggan)) },
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Next
+            ),
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }
 
