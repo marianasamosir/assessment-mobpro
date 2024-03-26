@@ -60,13 +60,18 @@ fun MainScreen(){
 @Composable
 fun ScreenContent(modifier: Modifier) {
 
-    val radioOptions = listOf(
+    val gelarRadioOptions = listOf(
         stringResource(id = R.string.tn),
         stringResource(id = R.string.ny),
         stringResource(id = R.string.nn)
     )
-    var gelar by remember { mutableStateOf(radioOptions[0]) }
+    var gelar by remember { mutableStateOf(gelarRadioOptions[0]) }
     var nama by remember { mutableStateOf("") }
+    val ukuranRadioOptions = listOf(
+        stringResource(id = R.string.super_burger),
+        stringResource(id = R.string.small_burger)
+    )
+    var ukuran by remember { mutableStateOf(ukuranRadioOptions[0]) }
 
     Column (
         modifier = modifier
@@ -80,20 +85,23 @@ fun ScreenContent(modifier: Modifier) {
             modifier = Modifier.fillMaxWidth()
         )
         Row (
-            modifier = Modifier.padding(top = 6.dp).border(1.dp, Color.Gray, RoundedCornerShape(5.dp))
+            modifier = Modifier
+                .padding(top = 6.dp)
+                .border(1.dp, Color.Gray, RoundedCornerShape(4.dp))
 
         ) {
-            radioOptions.forEach { text ->
+            gelarRadioOptions.forEach { text ->
                 GelarOption(
                     label = text,
                     isSelected = gelar == text,
-                    modifier = Modifier.selectable(
-                        selected = gelar == text,
-                        onClick = { gelar = text },
-                        role = Role.RadioButton
-                    )
+                    modifier = Modifier
+                        .selectable(
+                            selected = gelar == text,
+                            onClick = { gelar = text },
+                            role = Role.RadioButton
+                        )
                         .weight(1f)
-                        .padding(13.dp)
+                        .padding(16.dp)
                 )
             }
         }
@@ -108,6 +116,27 @@ fun ScreenContent(modifier: Modifier) {
             ),
             modifier = Modifier.fillMaxWidth()
         )
+        Row (
+            modifier = Modifier
+                .padding(top = 6.dp)
+                .border(1.dp, Color.Gray, RoundedCornerShape(4.dp))
+
+        ) {
+            ukuranRadioOptions.forEach { text ->
+                UkuranOption(
+                    label = text,
+                    isSelected = ukuran == text,
+                    modifier = Modifier
+                        .selectable(
+                            selected = ukuran == text,
+                            onClick = { ukuran = text },
+                            role = Role.RadioButton
+                        )
+                        .weight(1f)
+                        .padding(16.dp)
+                )
+            }
+        }
     }
 }
 
@@ -118,7 +147,22 @@ fun GelarOption(label: String, isSelected: Boolean, modifier: Modifier) {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center //buat Text nya berada di center dalam row
     ){
-        RadioButton(selected = isSelected, onClick = null,)
+        RadioButton(selected = isSelected, onClick = null)
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.padding(start = 8.dp)
+        )
+    }
+}
+
+@Composable
+fun UkuranOption(label: String, isSelected: Boolean, modifier: Modifier) {
+    Row (
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ){
+        RadioButton(selected = isSelected, onClick = null)
         Text(
             text = label,
             style = MaterialTheme.typography.bodyLarge,
