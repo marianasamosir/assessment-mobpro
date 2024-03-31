@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -65,13 +66,13 @@ fun ScreenContent(modifier: Modifier) {
         stringResource(id = R.string.ny),
         stringResource(id = R.string.nn)
     )
-    var gelar by remember { mutableStateOf(gelarRadioOptions[0]) }
+    var gelar by remember { mutableStateOf<String?>(null) }
     var nama by remember { mutableStateOf("") }
     val ukuranRadioOptions = listOf(
         stringResource(id = R.string.super_burger),
         stringResource(id = R.string.small_burger)
     )
-    var ukuran by remember { mutableStateOf(ukuranRadioOptions[0]) }
+    var ukuran by remember {  mutableStateOf<String?>(null) }
 
     Column (
         modifier = modifier
@@ -137,6 +138,45 @@ fun ScreenContent(modifier: Modifier) {
                 )
             }
         }
+        Column (
+            modifier = Modifier
+                .padding(top = 6.dp)
+                .border(1.dp, Color.Gray, RoundedCornerShape(4.dp)),
+        ){
+            Text(
+                text = stringResource(id = R.string.tambahan),
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(15.dp)
+            )
+            TambahVarian(R.string.keju, Modifier)
+            TambahVarian(R.string.saos, Modifier)
+            TambahVarian(R.string.daging, Modifier)
+            TambahVarian(R.string.telur, Modifier)
+        }
+    }
+}
+
+@Composable
+fun TambahVarian(labelResId: Int, modifier: Modifier = Modifier) {
+    val labelText = stringResource(id = labelResId)
+    var checked by remember { mutableStateOf(false) }
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+            .fillMaxWidth()
+            .padding()
+    ) {
+        Checkbox(
+            checked = checked, // Ganti dengan status yang sesuai jika diperlukan
+            onCheckedChange = {checked = it} // Tambahkan logika yang sesuai jika diperlukan
+        )
+        Text(
+            text = labelText,
+            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.padding(start = 8.dp)
+        )
     }
 }
 
@@ -170,6 +210,7 @@ fun UkuranOption(label: String, isSelected: Boolean, modifier: Modifier) {
         )
     }
 }
+
 
 @Preview(showBackground = true)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
