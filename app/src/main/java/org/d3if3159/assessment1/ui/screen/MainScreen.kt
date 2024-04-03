@@ -37,6 +37,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -105,21 +106,21 @@ fun ScreenContent(modifier: Modifier) {
         stringResource(id = R.string.nn)
     )
 
-    var gelar by remember { mutableStateOf(gelarList[0])}
+    var gelar by rememberSaveable { mutableStateOf(gelarList[0])}
 
-    var nama by remember { mutableStateOf("") }
-    var namaError by remember { mutableStateOf(false) }
+    var nama by rememberSaveable { mutableStateOf("") }
+    var namaError by rememberSaveable { mutableStateOf(false) }
 
-    var ukuran by remember {  mutableStateOf(ukuranList[0]) }
+    var ukuran by rememberSaveable {  mutableStateOf(ukuranList[0]) }
 
     val hargaSuperBurger = 50000
     val hargaSmallBurger = 30000
 
-    var hargaOutput by remember { mutableStateOf("") }
-    var namaOutput by remember { mutableStateOf("") }
-    var ukuranOutput by remember { mutableStateOf("") }
+    var hargaOutput by rememberSaveable { mutableStateOf("") }
+    var namaOutput by rememberSaveable { mutableStateOf("") }
+    var ukuranOutput by rememberSaveable { mutableStateOf("") }
 
-    var cekHarga by remember { mutableStateOf(false) }
+    var cekHarga by rememberSaveable { mutableStateOf(false) }
 
     Column (
         modifier = modifier
