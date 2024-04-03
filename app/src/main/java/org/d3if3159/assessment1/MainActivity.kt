@@ -16,8 +16,6 @@ import org.d3if3159.assessment1.ui.screen.MainScreen
 import org.d3if3159.assessment1.ui.theme.Assessment1Theme
 
 class MainActivity : ComponentActivity() {
-
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -27,7 +25,6 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-//                    Greeting("Android")
                     MainScreen()
                 }
             }
@@ -51,3 +48,4 @@ fun GreetingPreview() {
         Greeting("Android")
     }
 }
+

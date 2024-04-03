@@ -11,13 +11,18 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
@@ -38,6 +43,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.d3if3159.assessment1.R
@@ -80,10 +86,13 @@ fun ScreenContent(modifier: Modifier) {
         stringResource(id = R.string.ny),
         stringResource(id = R.string.nn)
     )
-    var gelar by remember { mutableStateOf<String?>(null) }
-    var nama by remember { mutableStateOf("") }
 
-    var ukuran by remember {  mutableStateOf<String?>(null) }
+    var gelar by remember { mutableStateOf(gelarList[0])}
+
+    var nama by remember { mutableStateOf("") }
+    var namaError by remember { mutableStateOf(false) }
+
+    var ukuran by remember {  mutableStateOf(ukuranList[0]) }
 
     val hargaSuperBurger = 50000
     val hargaSmallBurger = 30000
@@ -92,11 +101,15 @@ fun ScreenContent(modifier: Modifier) {
     var namaOutput by remember { mutableStateOf("") }
     var ukuranOutput by remember { mutableStateOf("") }
 
+    var cekHarga by remember { mutableStateOf(false) }
+
     Column (
         modifier = modifier
             .fillMaxSize()
+            .verticalScroll(rememberScrollState())
             .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ){
         Text(
             text = stringResource(id = R.string.app_intro),
@@ -123,10 +136,14 @@ fun ScreenContent(modifier: Modifier) {
                 )
             }
         }
+
         OutlinedTextField(
             value = nama,
             onValueChange = { nama = it },
             label = { Text(text = stringResource(id = R.string.nama_pelanggan)) },
+            isError = namaError,
+            trailingIcon = { IconPicker(isError = namaError, unit = "")},
+            supportingText = { ErrorHint(isError = namaError) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.Sentences,
@@ -160,10 +177,16 @@ fun ScreenContent(modifier: Modifier) {
         Row (
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly,
+
         ){
             Button(
                 onClick = {
-                    if(gelar != null && nama.isNotBlank() && ukuran != null) {
+                    namaError = (nama == "" || nama == "0")
+                    if (namaError) return@Button
+
+                    cekHarga = true
+
+                    if(nama.isNotBlank()) {
                         val ukuranId = when (ukuran) {
                             superBurgerLabel -> R.string.super_burger
                             smallBurgerLabel -> R.string.small_burger
@@ -174,9 +197,9 @@ fun ScreenContent(modifier: Modifier) {
                             R.string.small_burger -> hargaSmallBurger
                             else -> 0
                         }
-                        hargaOutput = "Harga: $harga"
-                        namaOutput = "Pesanan atas nama ${gelar ?: ""} $nama"
-                        ukuranOutput= "Ukuran: ${ukuran ?: ""}"
+                        namaOutput = "Pesanan atas nama ${gelar} $nama"
+                        ukuranOutput= "Ukuran ${ukuran}"
+                        hargaOutput = "Total Harga: Rp$harga"
                     }
                 },
                 modifier = Modifier.padding(top = 8.dp),
@@ -188,9 +211,9 @@ fun ScreenContent(modifier: Modifier) {
 
             Button(
                 onClick = {
-                    gelar = null
+                    gelar = (gelarList[0])
                     nama = ""
-                    ukuran = null
+                    ukuran = (ukuranList[0])
                     hargaOutput = ""
                     namaOutput = ""
                     ukuranOutput = ""
@@ -209,21 +232,37 @@ fun ScreenContent(modifier: Modifier) {
         Text(
             text = namaOutput,
             style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier
-                .padding(top = 8.dp)
+            modifier = Modifier.padding(top = 8.dp),
+            textAlign = TextAlign.Start
         )
         Text(
             text = ukuranOutput,
             style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier
-                .padding(top = 8.dp)
+            modifier = Modifier.padding(top = 8.dp),
+            textAlign = TextAlign.Start
         )
         Text(
             text = hargaOutput,
             style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier
-                .padding(top = 8.dp)
+            modifier = Modifier.padding(top = 8.dp),
+            textAlign = TextAlign.Start
         )
+    }
+}
+
+@Composable
+fun IconPicker(isError: Boolean, unit: String){
+    if (isError) {
+        Icon(imageVector = Icons.Filled.Warning, contentDescription = null)
+    } else {
+        Text(text = unit)
+    }
+}
+
+@Composable
+fun ErrorHint(isError: Boolean) {
+    if(isError){
+        Text(text = stringResource(id = R.string.textfield_invalid))
     }
 }
 
@@ -253,7 +292,7 @@ fun UkuranOption(label: String, isSelected: Boolean, modifier: Modifier) {
         Text(
             text = label,
             style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier.padding(start = 8.dp)
+            modifier = Modifier.padding(start = 8.dp, top = 4.dp)
         )
     }
 }
