@@ -18,11 +18,14 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
@@ -38,6 +41,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.ImeAction
@@ -46,13 +50,16 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import org.d3if3159.assessment1.R
+import org.d3if3159.assessment1.navigation.Screen
 import org.d3if3159.assessment1.ui.theme.Assessment1Theme
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(){
+fun MainScreen(navController: NavHostController){
     Scaffold(
         topBar = {
             TopAppBar(
@@ -62,7 +69,18 @@ fun MainScreen(){
                 colors = TopAppBarDefaults.mediumTopAppBarColors(
                     containerColor = Color(0xFFFAE367), //latar belakang
                     titleContentColor = Color(0xFF574611) //text judul
-                )
+                ),
+                actions = {
+                    IconButton(
+                        onClick = { navController.navigate(Screen.About.route)}
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Info,
+                            contentDescription = stringResource(id = R.string.tentang_aplikasi),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
             )
         }
     ) {padding ->
@@ -303,6 +321,6 @@ fun UkuranOption(label: String, isSelected: Boolean, modifier: Modifier) {
 @Composable
 fun ScreenPreview() {
     Assessment1Theme {
-        MainScreen()
+        MainScreen(rememberNavController())
     }
 }
