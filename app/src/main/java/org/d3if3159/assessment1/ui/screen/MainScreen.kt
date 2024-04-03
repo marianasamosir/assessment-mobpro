@@ -1,7 +1,10 @@
 package org.d3if3159.assessment1.ui.screen
 
+import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Build
+import android.os.Message
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -42,6 +45,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -122,6 +126,8 @@ fun ScreenContent(modifier: Modifier) {
 
     var cekHarga by rememberSaveable { mutableStateOf(false) }
 
+    val context = LocalContext.current
+
     Column (
         modifier = modifier
             .fillMaxSize()
@@ -165,7 +171,7 @@ fun ScreenContent(modifier: Modifier) {
             supportingText = { ErrorHint(isError = namaError) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(
-                capitalization = KeyboardCapitalization.Sentences,
+                    capitalization = KeyboardCapitalization.Words,
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Next
             ),
@@ -216,9 +222,9 @@ fun ScreenContent(modifier: Modifier) {
                             R.string.small_burger -> hargaSmallBurger
                             else -> 0
                         }
-                        namaOutput = "Pesanan atas nama ${gelar} $nama"
-                        ukuranOutput= "Ukuran ${ukuran}"
-                        hargaOutput = "Total Harga: Rp$harga"
+                        namaOutput = "${gelar} $nama"
+                        ukuranOutput= "${ukuran}"
+                        hargaOutput = "$harga"
                     }
                 },
                 modifier = Modifier.padding(top = 8.dp),
@@ -252,7 +258,7 @@ fun ScreenContent(modifier: Modifier) {
             text = namaOutput,
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.padding(top = 8.dp),
-            textAlign = TextAlign.Start
+            textAlign = TextAlign.Start,
         )
         Text(
             text = ukuranOutput,
@@ -266,6 +272,23 @@ fun ScreenContent(modifier: Modifier) {
             modifier = Modifier.padding(top = 8.dp),
             textAlign = TextAlign.Start
         )
+        if (cekHarga) {
+            Button(
+                onClick = {
+                    shareData(
+                        context = context,
+                        message = context.getString(R.string.bagikan_template, gelar,nama, ukuran, hargaOutput)
+                    )
+                },
+                modifier = Modifier.padding(top = 8.dp),
+                contentPadding = PaddingValues(horizontal = 35.dp, vertical = 12.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF866A0E)),
+                ) {
+                Text(
+                    text = stringResource(id = R.string.bagikan)
+                )
+            }
+        }
     }
 }
 
@@ -313,6 +336,16 @@ fun UkuranOption(label: String, isSelected: Boolean, modifier: Modifier) {
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.padding(start = 8.dp, top = 4.dp)
         )
+    }
+}
+
+private fun shareData(context: Context, message: String) {
+    val shareIntent = Intent(Intent.ACTION_SEND).apply {
+        type = "text/plain"
+        putExtra(Intent.EXTRA_TEXT, message)
+    }
+    if (shareIntent.resolveActivity(context.packageManager) != null){
+        context.startActivity(shareIntent)
     }
 }
 
