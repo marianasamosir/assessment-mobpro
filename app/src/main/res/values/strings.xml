@@ -13,6 +13,7 @@
     <string name="radio_invalid">Tidak boleh kosong.</string>
     <string name="tentang_aplikasi">Tentang Aplikasi</string>
     <string name="copyright">BurgerQueen merupakan sebuah aplikasi kasir untuk mendata nama pelanggan, ukuran burger yang ingin dipesan juga menghitung biaya yang akan dibayar oleh pelanggan.\n\nCopyright 2024 Mariana.\nAll rights reserved.</string>
+    <string name="kembali">Kembali</string>
 
     <!--    <string name="tambahan">Tambahan</string>-->
     <!--    <string name="keju">Keju (+Rp5000)</string>-->

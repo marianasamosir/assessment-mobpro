@@ -77,7 +77,7 @@ fun MainScreen(navController: NavHostController){
                         Icon(
                             imageVector = Icons.Outlined.Info,
                             contentDescription = stringResource(id = R.string.tentang_aplikasi),
-                            tint = MaterialTheme.colorScheme.primary
+                            tint = Color(0xFF574611)
                         )
                     }
                 }
