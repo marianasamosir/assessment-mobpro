@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BurgerQueen</string>
+    <string name="app_intro">Burger Queen has 2 sizes where the Super Burger is the large one and the Small burger is the small one. Please fill in to check the price of your order.</string>
+    <string name="tn">Mr</string>
+    <string name="ny">Mrs</string>
+    <string name="nn">Ms</string>
+    <string name="nama_pelanggan">Customer name</string>
+    <string name="super_burger">Super Burger</string>
+    <string name="small_burger">Small Burger</string>
+    <string name="cek_harga">Check Prices</string>
+    <string name="reset">Reset</string>
+    <string name="textfield_invalid">Can not be empty.</string>
+    <string name="radio_invalid">Can not be empty.</string>
+    <string name="tentang_aplikasi">About the Application</string>
+    <string name="copyright">BurgerQueen is a cashier application for recording customer names, the size of the burger you want to order and also calculating the costs that the customer will pay. Copyright 2024 Mariana. All rights reserved.</string>
+    <string name="kembali">Back</string>
+    <string name="bagikan">Share</string>
+    <string name="bagikan_template">Order in the name of  %1$s %2$s, %3$s Size, Total Price: Rp%4$s</string>
+</resources>
