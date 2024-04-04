@@ -1,4 +1,4 @@
-# Nama : Mariana
-# NIM : 6706223159
-# Kelas : D3IF46-02
-# assessment-mobpro
+Nama : Mariana
+NIM : 6706223159
+Kelas : D3IF46-02
+assessment-mobpro
