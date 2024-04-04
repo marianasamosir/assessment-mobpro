@@ -61,7 +61,6 @@ import org.d3if3159.assessment1.R
 import org.d3if3159.assessment1.navigation.Screen
 import org.d3if3159.assessment1.ui.theme.Assessment1Theme
 
-@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(navController: NavHostController){
@@ -127,6 +126,7 @@ fun ScreenContent(modifier: Modifier) {
     var cekHarga by rememberSaveable { mutableStateOf(false) }
 
     val context = LocalContext.current
+    var showBagikan by rememberSaveable { mutableStateOf(false) }
 
     Column (
         modifier = modifier
@@ -224,7 +224,7 @@ fun ScreenContent(modifier: Modifier) {
                         }
                         namaOutput = "${gelar} $nama"
                         ukuranOutput= "${ukuran}"
-                        hargaOutput = "$harga"
+                        hargaOutput = "${harga}"
                     }
                 },
                 modifier = Modifier.padding(top = 8.dp),
@@ -242,6 +242,7 @@ fun ScreenContent(modifier: Modifier) {
                     hargaOutput = ""
                     namaOutput = ""
                     ukuranOutput = ""
+                    showBagikan = false
                 },
                 modifier = Modifier.padding(top = 8.dp),
                 contentPadding = PaddingValues(horizontal = 35.dp, vertical = 12.dp),
@@ -250,29 +251,30 @@ fun ScreenContent(modifier: Modifier) {
                 Text(text = stringResource(id = R.string.reset))
             }
         }
-        Divider(
-            modifier = Modifier.padding(vertical = 8.dp),
-            thickness = 1.dp
-        )
-        Text(
-            text = namaOutput,
-            style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier.padding(top = 8.dp),
-            textAlign = TextAlign.Start,
-        )
-        Text(
-            text = ukuranOutput,
-            style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier.padding(top = 8.dp),
-            textAlign = TextAlign.Start
-        )
-        Text(
-            text = hargaOutput,
-            style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier.padding(top = 8.dp),
-            textAlign = TextAlign.Start
-        )
+
         if (cekHarga) {
+            Divider(
+                modifier = Modifier.padding(vertical = 8.dp),
+                thickness = 1.dp
+            )
+            Text(
+                text = namaOutput,
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.padding(top = 8.dp),
+                textAlign = TextAlign.Start,
+            )
+            Text(
+                text = ukuranOutput,
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.padding(top = 8.dp),
+                textAlign = TextAlign.Start
+            )
+            Text(
+                text = hargaOutput,
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.padding(top = 8.dp),
+                textAlign = TextAlign.Start
+            )
             Button(
                 onClick = {
                     shareData(
@@ -283,7 +285,7 @@ fun ScreenContent(modifier: Modifier) {
                 modifier = Modifier.padding(top = 8.dp),
                 contentPadding = PaddingValues(horizontal = 35.dp, vertical = 12.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF866A0E)),
-                ) {
+            ) {
                 Text(
                     text = stringResource(id = R.string.bagikan)
                 )
@@ -349,7 +351,6 @@ private fun shareData(context: Context, message: String) {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable

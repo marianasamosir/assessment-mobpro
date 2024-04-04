@@ -1,8 +1,6 @@
 package org.d3if3159.assessment1.ui.screen
 
 import android.content.res.Configuration
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,7 +27,6 @@ import androidx.navigation.compose.rememberNavController
 import org.d3if3159.assessment1.R
 import org.d3if3159.assessment1.ui.theme.Assessment1Theme
 
-@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AboutScreen(navController: NavHostController){
@@ -74,7 +71,6 @@ fun AboutScreen(navController: NavHostController){
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
